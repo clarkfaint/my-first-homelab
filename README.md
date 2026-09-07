@@ -29,6 +29,14 @@ Rather than exposing services directly to the public internet, the lab is archit
 | **Dispatcharr** | Media queue pipeline & automation orchestration | Web UI container hooked into localized application API networks. | Docker (Portainer managed) |
 | **Joplin** | Decentralized notebook syncing & database storage | Configured with internal synchronization pathways to maintain local data control. | Docker (Portainer managed) |
 
+## 📐 Design Decisions & Software Lifecycle
+
+A critical part of managing a production or lab environment is evaluating software viability, maintaining documentation accuracy, and decommissioning deprecated components.
+
+### 🗑️ Tech Stack Decommissioning: osTicket
+* **Decision:** Intentionally removed the `osticket-database` and frontend web container infrastructure from the active deployment stack.
+* **Engineering Rationale:** While osTicket provided an excellent initial baseline for understanding database containerization and local port assignments, the platform lacks alignment with modern enterprise cloud ecosystems. To maximize professional skill relevance, infrastructure resources were repurposed away from legacy self-hosted ticketing solutions to focus heavily on modern web-based enterprise helpdesk platforms and simulation suites.
+
 
 ## 🛠️ Maintenance & Useful Commands
 
