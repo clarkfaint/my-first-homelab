@@ -38,15 +38,21 @@ A critical part of managing a production or lab environment is evaluating softwa
 * **Engineering Rationale:** While osTicket provided an excellent initial baseline for understanding database containerization and local port assignments, the platform lacks alignment with modern enterprise cloud ecosystems. To maximize professional skill relevance, infrastructure resources were repurposed away from legacy self-hosted ticketing solutions to focus heavily on modern web-based enterprise helpdesk platforms and simulation suites.
 
 
-## 🛠️ Maintenance & Useful Commands
+## 🛠️ Operational Runbooks & Standard Operating Procedures (SOPs)
 
-### Quick Docker Cleanup
-Run this via SSH or the Portainer console to clean up unused images and free up space on the laptop storage:
-```bash
-docker system prune -a --volumes
-```
+To maintain high availability and resource optimization on a single-node host, the following operational baselines are executed regularly via secure SSH administration.
 
-### Backing Up Configuration Data
-Ensure persistent volume data (like Nextcloud databases or Pi-hole lists) is backed up before running host updates:
+### SOP-01: Automated Storage Optimization & Container Cleanup
+**Objective:** Reclaim storage allocation and purge dead layers safely without affecting persistent application states.
+* **Procedure:** Execute the following prune sequence to remove unused container images, stopped containers, and dangling network structures while explicitly destroying unused local anonymous volumes:
+  ```bash
+  sudo docker system prune -a --volumes
+  ```
+* **Safety Protocol:** Verify that all application configuration state mappings are actively tied to explicit host directory mounts before execution to avoid accidental data loss.
 
-```
+### SOP-02: Data Persistence & Configuration Backups
+**Objective:** Maintain configuration baselines for critical localized application databases (e.g., Nextcloud sync paths, Pi-hole blocklists, and Joplin storage data).
+* **Procedure:** Before any upstream host upgrades or kernel modifications on the underlying Fedora platform, all application persistent volume spaces are isolated, staged, and snapshotted.
+* **Target Configurations:** 
+  * `/etc/dnsmasq.d/` (Custom local wildcard split-horizon structures)
+  * Local Portainer volume mappings for user database stores
