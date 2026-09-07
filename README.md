@@ -16,16 +16,19 @@ Welcome to my homelab repository. This project serves as a central hub for docum
 All localized containers are deployed and monitored visually using **Portainer**. 
 
 
-## 🚀 Active Services & Applications
+## 🚀 Active Services & Architectural Matrix
 
-| Service | Purpose | Access URL |
-| :--- | :--- | :--- |
-| **Pi-hole** | Network-wide ad blocking & local DNS management |
-| **Nextcloud** | Private cloud storage, file sharing, and productivity |
-| **Jellyfin** | Free, open-source media streaming and organization server |
-| **Tailscale** | Secure mesh VPN for remote access to my local network | Managed via Tailscale Admin Console |
-| **Dispatcharr** | Media queue orchestration and request dispatch management |
-| **Joplin** | Open-source note-taking and to-do application with synchronization | 
+Rather than exposing services directly to the public internet, the lab is architected around a Zero-Trust network layer and a localized Split-Horizon DNS infrastructure. Local subdomains are securely routed within the `homelab.internal` zone.
+
+| Service | Primary Purpose | Networking & DNS Configuration | Deployment Stack |
+| :--- | :--- | :--- | :--- |
+| **Pi-hole** | Network-wide ad blocking & Local DNS authoritative server | Listening on Port `8888`. Configured custom `dnsmasq` wildcard routing (`*.homelab.internal`) to map subdomains locally. | Docker (Portainer Container) |
+| **Tailscale** | Encrypted mesh VPN for secure remote administration | WireGuard-based overlay network. Allows seamless remote SSH/web access to local machine node (`192.168.68.65`) without opening WAN ports. | Native Host Daemon |
+| **Nextcloud** | Private cloud storage, sync, & data virtualization | Routed locally via custom internal reverse proxy mapping for secure file transactions. | Docker (Persistent Volumes) |
+| **Jellyfin** | Open-source media streaming & asset orchestration | Local loopback asset streaming, segmented within internal network layer. | Docker (Portainer managed) |
+| **Dispatcharr** | Media queue pipeline & automation orchestration | Web UI container hooked into localized application API networks. | Docker (Portainer managed) |
+| **Joplin** | Decentralized notebook syncing & database storage | Configured with internal synchronization pathways to maintain local data control. | Docker (Portainer managed) |
+
 
 ## 🛠️ Maintenance & Useful Commands
 
