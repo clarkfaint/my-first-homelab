@@ -23,10 +23,10 @@ Rather than exposing services directly to the public internet, the lab is archit
 | Service | Primary Purpose | Networking & DNS Configuration | Deployment Stack |
 | :--- | :--- | :--- | :--- |
 | **Pi-hole** | Network-wide ad blocking & Local DNS authoritative server | DNS on port `53` (TCP/UDP); web admin published on port `8888`. Configured custom `dnsmasq` wildcard routing (`*.homelab.internal`) to map subdomains locally. | Docker (Portainer Container) |
-| **Tailscale** | Encrypted mesh VPN for secure remote administration | WireGuard-based overlay network. Allows seamless remote SSH/web access to local machine node (`192.168.68.65`) without opening WAN ports. | Native Host Daemon |
+| **Tailscale** | Encrypted mesh VPN for secure remote administration | WireGuard-based overlay network. Allows seamless remote SSH/web access to local machine node (`<host-IP>`) without opening WAN ports. | Native Host Daemon |
 | **Nextcloud** | Private cloud storage, sync, & data virtualization | Routed locally via custom internal reverse proxy mapping for secure file transactions. | Docker (Persistent Volumes) |
 | **Jellyfin** | Open-source media streaming & asset orchestration | Local loopback asset streaming, segmented within internal network layer. | Docker (Portainer managed) |
-| **Dispatcharr** | Media queue pipeline & automation orchestration | Web UI container hooked into localized application API networks. | Docker (Portainer managed) |
+| **Dispatcharr** | IPTV playlist, EPG, and VOD management with a stream proxy | Web UI container on the local network. | Docker (Portainer managed) |
 | **Joplin** | Decentralized notebook syncing & database storage | Configured with internal synchronization pathways to maintain local data control. | Docker (Portainer managed) |
 
 ## 📐 Design Decisions & Software Lifecycle
@@ -40,15 +40,15 @@ A critical part of managing a production or lab environment is evaluating softwa
 
 ## 🛠️ Operational Runbooks & Standard Operating Procedures (SOPs)
 
-To maintain high availability and resource optimization on a single-node host, the following operational baselines are executed regularly via secure SSH administration.
+To keep this single-node host stable and free up storage, I run the following procedures over SSH.
 
-### SOP-01: Automated Storage Optimization & Container Cleanup
-**Objective:** Reclaim storage allocation and purge dead layers safely without affecting persistent application states.
-* **Procedure:** Execute the following prune sequence to remove unused container images, stopped containers, and dangling network structures while explicitly destroying unused local anonymous volumes:
+### SOP-01: Storage Cleanup & Container Pruning
+**Objective:** Reclaim storage by removing unused Docker data while keeping application volumes.
+* **Procedure:** Run this command manually to remove stopped containers, unused networks, images not used by a container, and build cache:
   ```bash
-  sudo docker system prune -a --volumes
+  sudo docker system prune -a
   ```
-* **Safety Protocol:** Verify that all application configuration state mappings are actively tied to explicit host directory mounts before execution to avoid accidental data loss.
+* **Before running:** Confirm the SOP-02 backups are current, and use `docker ps -a` to check that every container you want to keep is running. `--volumes` is left out on purpose, because it can delete anonymous volumes that hold application data.
 
 ### SOP-02: Data Persistence & Configuration Backups
 **Objective:** Maintain configuration baselines for critical localized application databases (e.g., Nextcloud sync paths, Pi-hole blocklists, and Joplin storage data).
