@@ -18,7 +18,7 @@ All localized containers are deployed and monitored visually using **Portainer**
 
 ## 🚀 Active Services & Architectural Matrix
 
-Rather than exposing services directly to the public internet, the lab is architected around a Zero-Trust network layer and a localized Split-Horizon DNS infrastructure. Local subdomains are securely routed within the `homelab.internal` zone.
+Rather than exposing services directly to the public internet, the lab is architected around a Zero-Trust network layer and a local wildcard DNS infrastructure. Local subdomains are securely routed within the `homelab.internal` zone.
 
 | Service | Primary Purpose | Networking & DNS Configuration | Deployment Stack |
 | :--- | :--- | :--- | :--- |
@@ -54,5 +54,5 @@ To maintain high availability and resource optimization on a single-node host, t
 **Objective:** Maintain configuration baselines for critical localized application databases (e.g., Nextcloud sync paths, Pi-hole blocklists, and Joplin storage data).
 * **Procedure:** Before any upstream host upgrades or kernel modifications on the underlying Fedora platform, all application persistent volume spaces are isolated, staged, and snapshotted.
 * **Target Configurations:** 
-  * `/etc/dnsmasq.d/` (Custom local wildcard split-horizon structures)
+  * `/etc/dnsmasq.d/` (Custom local wildcard DNS configuration)
   * Local Portainer volume mappings for user database stores
