@@ -22,7 +22,7 @@ Rather than exposing services directly to the public internet, the lab is archit
 
 | Service | Primary Purpose | Networking & DNS Configuration | Deployment Stack |
 | :--- | :--- | :--- | :--- |
-| **Pi-hole** | Network-wide ad blocking & Local DNS authoritative server | Listening on Port `8888`. Configured custom `dnsmasq` wildcard routing (`*.homelab.internal`) to map subdomains locally. | Docker (Portainer Container) |
+| **Pi-hole** | Network-wide ad blocking & Local DNS authoritative server | DNS on port `53` (TCP/UDP); web admin published on port `8888`. Configured custom `dnsmasq` wildcard routing (`*.homelab.internal`) to map subdomains locally. | Docker (Portainer Container) |
 | **Tailscale** | Encrypted mesh VPN for secure remote administration | WireGuard-based overlay network. Allows seamless remote SSH/web access to local machine node (`192.168.68.65`) without opening WAN ports. | Native Host Daemon |
 | **Nextcloud** | Private cloud storage, sync, & data virtualization | Routed locally via custom internal reverse proxy mapping for secure file transactions. | Docker (Persistent Volumes) |
 | **Jellyfin** | Open-source media streaming & asset orchestration | Local loopback asset streaming, segmented within internal network layer. | Docker (Portainer managed) |
